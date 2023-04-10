@@ -13,9 +13,9 @@ async fn main() -> std::io::Result<()> {
     let port = env::var("API_PORT")
         .unwrap_or_else(|_| "8080".to_string())
         .parse::<u16>()
-        .expect("API_PORT deve ser um número");
+        .expect("API_PORT");
 
-    println!("Iniciando servidor em http://{}:{}", host, port);
+    println!("Starting server on http://{}:{}", host, port);
 
     HttpServer::new(|| {
         App::new()
