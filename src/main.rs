@@ -1,8 +1,10 @@
 use actix_web::{web, App, HttpServer};
+use actix_web::middleware::Logger;
 use dotenv::dotenv;
 use std::env;
 
 mod controllers;
+mod routes;
 mod services;
 
 #[actix_web::main]
@@ -19,11 +21,8 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(|| {
         App::new()
-            .route("/", web::get().to(controllers::user_controller::get_users))
-            .route(
-                "/post",
-                web::post().to(controllers::user_controller::delete_user),
-            )
+            .wrap(Logger::default())
+            .service(web::scope("/users").configure(routes::user_routes::init_routes))
     })
     .bind((host, port))?
     .run()
